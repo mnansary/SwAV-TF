@@ -32,7 +32,6 @@ def gaussian_blur(image, kernel_size=23, padding='SAME'):
 		blurred = tf.squeeze(blurred, axis=0)
 	return blurred
 
-@tf.function
 def color_jitter(x, s=0.5):
 	x = tf.image.random_brightness(x, max_delta=0.8*s)
 	x = tf.image.random_contrast(x, lower=1-0.8*s, upper=1+0.8*s)
@@ -41,13 +40,11 @@ def color_jitter(x, s=0.5):
 	x = tf.clip_by_value(x, 0, 1)
 	return x
 
-@tf.function
 def color_drop(x):
 	x = tf.image.rgb_to_grayscale(x)
 	x = tf.tile(x, [1, 1, 3])
 	return x
 
-@tf.function
 def custom_augment(image):
 	# Random flips
 	image = random_apply(tf.image.flip_left_right, image, p=0.5)
@@ -60,7 +57,6 @@ def custom_augment(image):
 
 	return image
 
-@tf.function
 def random_resize_crop(image, min_scale, max_scale, crop_size):
 	# Conditional resizing
 	if crop_size == 224:
@@ -79,7 +75,6 @@ def random_resize_crop(image, min_scale, max_scale, crop_size):
 
 	return crop_resize
 
-@tf.function
 def random_apply(func, x, p):
 	return tf.cond(
 		tf.less(tf.random.uniform([], minval=0, maxval=1, dtype=tf.float32),
@@ -87,12 +82,10 @@ def random_apply(func, x, p):
 		lambda: func(x),
 		lambda: x)
 
-@tf.function
 def scale_image(image):
 	image = tf.image.convert_image_dtype(image, tf.float32)
 	return image
 
-@tf.function
 def tie_together(image, min_scale, max_scale, crop_size):
 	# Retrieve the image features
 	image = image['image']
@@ -117,7 +110,7 @@ def get_multires_dataset(dataset,
 		for _ in range(num_crop):
 			loader = (
 					dataset
-					.shuffle(1024)
+					.shuffle(2048)
 					.map(lambda x: tie_together(x, min_scale[i],
 						max_scale[i], size_crops[i]), num_parallel_calls=AUTO)
 				)
