@@ -49,9 +49,9 @@ def custom_augment(image):
 	# Random flips
 	image = random_apply(tf.image.flip_left_right, image, p=0.5)
 	# Randomly apply gausian blur
-	image = random_apply(gaussian_blur, image, p=0.5)
+	#image = random_apply(gaussian_blur, image, p=0.5)
 	# Randomly apply transformation (color distortions) with probability p.
-	image = random_apply(color_jitter, image, p=0.8)
+	#image = random_apply(color_jitter, image, p=0.8)
 	# Randomly apply grayscale
 	image = random_apply(color_drop, image, p=0.2)
 
