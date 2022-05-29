@@ -53,7 +53,7 @@ def custom_augment(image):
 	# Randomly apply transformation (color distortions) with probability p.
 	#image = random_apply(color_jitter, image, p=0.8)
 	# Randomly apply grayscale
-	image = random_apply(color_drop, image, p=0.2)
+	#image = random_apply(color_drop, image, p=0.2)
 
 	return image
 
